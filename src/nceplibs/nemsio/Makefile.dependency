@@ -1,0 +1,6 @@
+
+nemsio_openclose.o: nemsio_openclose.f90
+nemsio_read.o: nemsio_read.f90 nemsio_openclose.o
+nemsio_write.o: nemsio_write.f90 nemsio_openclose.o
+nemsio_module.o: nemsio_module.f90 nemsio_openclose.o nemsio_read.o nemsio_write.o
+nemsio_module_mpi.o: nemsio_module_mpi.f90 nemsio_openclose.o nemsio_read.o nemsio_write.o

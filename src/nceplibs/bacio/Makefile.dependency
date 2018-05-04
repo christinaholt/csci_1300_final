@@ -1,0 +1,5 @@
+byteswap.o :  byteswap.c
+bacio.o : bacio.c
+baciof.o : baciof.f bacio.o
+bafrio.o : bafrio.f baciof.o
+chk_endianc.o : chk_endianc.f
