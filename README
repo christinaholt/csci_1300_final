@@ -1,0 +1,80 @@
+This package generates a Python interface to the NCEP NEMSIO library that is
+used to read, and then plot a NEMSIO-formatted file for viewing atmospheric
+fields at different levels.
+
+Requirements:
+  - conda installation.
+      - Miniconda can be installed with a visit to https://conda.io/miniconda.html
+      - Probably say no to allowing this install to edit your .bashrc and add
+        the install path to your own .bashrc or $PATH manually.
+
+**** BUILD THE NECESSARY LIBRARIES ****
+
+    Once the repository has been cloned, the code can be built by simply typing
+    these lines from the top-level of the clone:
+
+        source build.sh
+        build_all
+
+    It's probably a good time to have a cup of coffee. This step takes 10-15 mins.
+
+    The result of those actions will be the following:
+
+        - A new conda environment named pynemsio will be generated. WARNING: If you
+          already have a pynemsio conda environment installed, it WILL REMOVE IT. If
+          this happens, you'll need to run build_all again.
+        - The necessary NCEP libraries are built (out of source) with cmake in the
+          src/nceplibs/build directory.
+        - The nemsio_wrapper Fortran shared object (nemsio_wrapper.so) will be
+          generated in the src/nemsio_wrapper directory
+
+
+    Any of the functions available in build.sh can be called directly once the
+    script has been sourced. A particularly helpfull function is clean_all, which
+    removes the NCEP library build directory, the nemsio_wrapper.so (through it's
+    Makefile), and the Conda environment pynemsio.
+
+    NOTE: The build of the libraries, and the f2py build both generate many
+    warnings, but these are compiler-related and are mostly innocuous. There are
+    also a large block of warnings related to the OS Version near the end of the
+    build. Those should be fine, too.
+
+**** PLOTTING NEMSIO FILES ****
+
+    Once the build has completed and nemsio_wrapper.so exists in
+    src/nemsio_wrapper
+
+        cd src/nemsio_wrapper
+
+    There you will find plot_nemiso.py, a Python script that will plot a
+    NEMSIO-formatted file.  Check out the usage of this file by typing
+
+        python plot_nemsio.py -h
+
+    The standard fields are surface pressure (psfc), temperature (tmp), U and V
+    wind components (ugrd, vgrd), wind speed (wind), and specific humidity
+    (spfh).
+
+    Example: 
+
+        python plot_nemsio.py -f gsi_anl -l 50 -p 8 -o anl
+
+        Will use 8 processes to plot fields from file gsi_anl at every 50th
+        level starting at 1, and write them to .png files with an anl prefix.
+
+        python plot_nemsio.py -f gsi_anl gsi_bkg -l 50 -p 12 -o incr
+
+        Will use 12 processes to plot the difference of fields in the files
+        gsi_anl and gsi_bkg (this particular difference is known as analysis
+        increment in data assimilation) at every 50th level starting at 1 and
+        write them to .png files wint and incr prefix.
+
+
+**** Additional Notes ****
+
+    The NCEP libraries were obtained from a colleage's public Git repo and came
+    ready-to-build with cmake. I included only a subset of those libraries
+    necessary for this project in the code I turned in. You can access the full
+    repo here:
+
+        https://github.com/t-brown/nceplibs

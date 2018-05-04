@@ -1,0 +1,18 @@
+name: pynemsio
+channels:
+ - conda-forge
+ - anaconda
+ - defaults
+dependencies:
+ - python 2.7.14
+ - pyyaml
+ - numpy 1.13.0.*
+ - cmake
+ - make
+ - gcc
+ - llvm
+ - scipy
+ - matplotlib
+ - libgfortran
+ - basemap
+
